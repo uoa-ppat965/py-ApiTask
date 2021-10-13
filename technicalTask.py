@@ -5,29 +5,39 @@
 #Required packages
 import requests
 
-print("Kia Ora, welcome to the to this program!")
+#Printing ascii art
+f = open('octocat.txt', 'r')
+print(''.join([line for line in f]))
+print(" ")
 
+#Greetings
+print("Kia Ora, welcome to the to this program!")
+print(" ")
 print("Let's process some Github data")
 print(" ")
-owner = input("Who is the repo owner? ")
 
+#Getting user inputs
+owner = input("Who is the repo owner? ")
 repo = input("What is the repo name? ")
-query = "https://api.github.com/repos/" + owner + "/" + repo + "/pulls"
+
+#Making the repo query
 print("Great sending a query for open Pull requests")
-r = requests.get(query) #goest to internet and grabs the stuff
+query = "https://api.github.com/repos/" + owner + "/" + repo + "/pulls"
+r = requests.get(query) #goes to internet and grabs the stuff
 stuff =r.links 
 
+#Checking if pull requests span multiple pages i.e > 30
 if len(stuff) == 0:
-    number = len(r.json())
+    number = len(r.json()) #pull requests if <30
 else:
-    lastpageurl = str(stuff['last']['url'])
-    setofUrl = lastpageurl.partition("=")
-    maxpage = setofUrl[2]
-    query = query + "?page=" + maxpage
-    r = requests.get(query) #goes to internet and grabs the stuff
-    otherpages = 30*(int(maxpage)-1)
-    number = otherpages + len(r.json())
-    
+    lastpageurl = str(stuff['last']['url']) 
+    setofUrl = lastpageurl.partition("=") #splits url based on where "page=" is
+    maxpage = setofUrl[2] #grabbing the number
+    query = query + "?page=" + maxpage #creating lastpage url
+    r = requests.get(query) 
+    otherpages = 30*(int(maxpage)-1) #adds pull request to existing
+    number = otherpages + len(r.json()) #final calculation
+
 print(" ")
 print("Data Found! The number of open PRS is: ", number)
 print(" ")
