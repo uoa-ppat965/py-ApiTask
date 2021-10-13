@@ -22,3 +22,6 @@ The ascii artwork was from the following source:
 
 Author: "pi314", Link: "https://github.com/pi314/ascii-arts/blob/master/octocat.asciiart"
 
+The ascii artwork was printed using code influenced from the following source:
+Author: "learnlearn", Link "https://learnlearn.uk/python/ascii-art/"
+
