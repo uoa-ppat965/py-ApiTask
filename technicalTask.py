@@ -19,25 +19,31 @@ print(" ")
 #Getting user inputs
 owner = input("Who is the repo owner? ")
 repo = input("What is the repo name? ")
-
+print("Great sending the request query for " + owner, "and " + repo)
+print(" ")
 #Making the repo query
 query = "https://api.github.com/repos/" + owner + "/" + repo + "/pulls"
 r = requests.get(query) #goes to internet and grabs the stuff
-stuff =r.links 
 
-#Checking if pull requests span multiple pages i.e > 30
-if len(stuff) == 0:
-    number = len(r.json()) #pull requests if <30
-else:
-    lastpageurl = str(stuff['last']['url']) 
-    setofUrl = lastpageurl.partition("=") #splits url based on where "page=" is
-    maxpage = setofUrl[2] #grabbing the number
-    query = query + "?page=" + maxpage #creating lastpage url
-    r = requests.get(query) 
-    otherpages = 30*(int(maxpage)-1) #adds pull request to existing
-    number = otherpages + len(r.json()) #final calculation
+#Checking if conditional is valid
+if str(r)== "<Response [404]>":
+    print("Sorry the repo or owner doesn't exist")
+else: 
+    stuff =r.links 
 
-print(" ")
-print("Data Found! The number of open PRS is: ", number)
+    #Checking if pull requests span multiple pages i.e > 30
+    if len(stuff) == 0:
+        number = len(r.json()) #pull requests if <30
+    else:
+        lastpageurl = str(stuff['last']['url']) 
+        setofUrl = lastpageurl.partition("=") #splits url based on where "page=" is
+        maxpage = setofUrl[2] #grabbing the number
+        query = query + "?page=" + maxpage #creating lastpage url
+        r = requests.get(query) 
+        otherpages = 30*(int(maxpage)-1) #adds pull request to existing
+        number = otherpages + len(r.json()) #final calculation
+
+    print(" ")
+    print("Data Found! The number of open pull requests is: ", number)
 print(" ")
 print("Great! Bye for now")
