@@ -21,7 +21,6 @@ owner = input("Who is the repo owner? ")
 repo = input("What is the repo name? ")
 
 #Making the repo query
-print("Great sending a query for open Pull requests")
 query = "https://api.github.com/repos/" + owner + "/" + repo + "/pulls"
 r = requests.get(query) #goes to internet and grabs the stuff
 stuff =r.links 
